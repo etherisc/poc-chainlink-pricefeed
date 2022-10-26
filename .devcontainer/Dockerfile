@@ -28,9 +28,11 @@ RUN pip3 install thefuck --user \
 RUN echo 'eval "$(mcfly init zsh)"' >> ~/.zshrc \
     && touch ~/.zsh_history
 
-# 4) install web3 and dotenv
+# 4) install web3, pandas and dotenv
 RUN pip3 install web3
 RUN pip3 install python-dotenv
+RUN pip3 install pandas
+RUN pip3 install matplotlib
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
