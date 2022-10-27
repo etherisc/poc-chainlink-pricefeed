@@ -38,6 +38,7 @@ Such an endpoint may be provided via in the `RPC_MAINNET` variable in the `.env`
 
 The implemented mechanism runs though all available aggregator contracts for a feed contract starting with the oldest aggregator (phaseId = 1) and fetching all price values using `getRoundData` for values 1 ... `latestRound`.
 The phaseId is increased by one and the procedure is repeatet to get more data until all data of the current aggregator has been fetched.
+### USDC Step by Step
 
 ```bash
 python scripts/price_feed.py --net mainnet --pair USDC/USD > chainlink_usdc_usd_all.txt
@@ -46,7 +47,7 @@ python scripts/price_feed.py --net mainnet --pair USDC/USD > chainlink_usdc_usd_
 Convert price feed raw data into CSV format
 
 ```bash
-cat chainlink_usdc_usd_all.txt > python scripts/feed2csv.py > chainlink_usdc_usd_all.csv
+cat chainlink_usdc_usd_all.txt | python scripts/feed2csv.py > chainlink_usdc_usd_all.csv
 ```
 
 Compact CSV price feed file (remove duplicates from different phase IDs).
@@ -66,3 +67,29 @@ python scripts/plot_feed.py chainlink_usdc_usd.csv chainlink_usdc_usd.png --titl
 Resulting plot
 
 ![USDC/USD plot](./chainlink_usdc_usd.png)
+
+### USDT Condenced
+
+```bash
+python scripts/price_feed.py --net mainnet --pair USDT/USD > chainlink_usdt_usd_all.txt
+cat chainlink_usdt_usd_all.txt | python scripts/feed2csv.py > chainlink_usdt_usd_all.csv
+python scripts/compact_feed.py chainlink_usdt_usd_all.csv chainlink_usdt_usd.csv
+python scripts/plot_feed.py chainlink_usdt_usd.csv chainlink_usdt_usd.png --title "USDT/USD"
+```
+
+Resulting plot
+
+![USDT/USD plot](./chainlink_usdt_usd.png)
+
+### USDN Condenced
+
+```bash
+python scripts/price_feed.py --net mainnet --pair USDN/USD > chainlink_usdn_usd_all.txt
+cat chainlink_usdn_usd_all.txt | python scripts/feed2csv.py > chainlink_usdn_usd_all.csv
+python scripts/compact_feed.py chainlink_usdn_usd_all.csv chainlink_usdn_usd.csv
+python scripts/plot_feed.py chainlink_usdn_usd.csv chainlink_usdn_usd.png --title "USDN/USD"
+```
+
+Resulting plot
+
+![USDN/USD plot](./chainlink_usdn_usd.png)
