@@ -66,9 +66,11 @@ python scripts/plot_feed.py chainlink_usdc_usd.csv chainlink_usdc_usd.png --titl
 
 Resulting plot
 
-![USDC/USD plot](./chainlink_usdc_usd.png)
+![USDC/USD plot](./chainlink_usdc_usd.png) 
+![USDC/USD histogram](./chainlink_usdc_usd_hist.png)
 
-### USDT Condenced
+
+### USDT Condensed
 
 ```bash
 python scripts/price_feed.py --net mainnet --pair USDT/USD > chainlink_usdt_usd_all.txt
@@ -80,8 +82,9 @@ python scripts/plot_feed.py chainlink_usdt_usd.csv chainlink_usdt_usd.png --titl
 Resulting plot
 
 ![USDT/USD plot](./chainlink_usdt_usd.png)
+![USDT/USD histogram](./chainlink_usdt_usd_hist.png)
 
-### USDN Condenced
+### USDN Condensed
 
 ```bash
 python scripts/price_feed.py --net mainnet --pair USDN/USD > chainlink_usdn_usd_all.txt
@@ -93,3 +96,65 @@ python scripts/plot_feed.py chainlink_usdn_usd.csv chainlink_usdn_usd.png --titl
 Resulting plot
 
 ![USDN/USD plot](./chainlink_usdn_usd.png)
+![USDN/USD histogram](./chainlink_usdn_usd_hist.png)
+
+
+## Depeg Trigger and Recovery
+### USDC Depeg
+
+```bash
+python scripts/analyze_feed.py chainlink_usdc_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 1 --plotMinValue 0.97 --title "USDC/USD" --pngFile chainlink_usdc_depeg.png
+```
+
+Script output
+
+```bash
+triggerValue: 0.995 (99500000)
+recoverValue: 0.999 (99900000)
+```
+
+Plot
+
+![USDC/USD plot](./chainlink_usdc_depeg.png)
+
+### USDT Depeg
+
+```bash
+python scripts/analyze_feed.py chainlink_usdt_usd.csv --triggerValue 0.99 --recoverValue 0.995 --maxDuration 1 --plotMinValue 0.9 --title "USTC/USD" --pngFile chainlink_usdt_depeg.png
+```
+
+Script output
+
+```bash
+triggerValue: 0.99 (99000000)
+recoverValue: 0.995 (99500000)
+TRIGGER roundId 36893488147419103690 answer 98750000 trigger 99000000 dateTimeAt 2022-05-12 06:23:41
+RECOVER ------- 0d 9:19:36 ticks 41 roundId 36893488147419103731 answer 99753476 dateTimeAt 2022-05-12 15:43:17
+```
+
+Plot
+![USDT/USD plot](./chainlink_usdt_depeg.png)
+
+### USDN Depeg
+
+```bash
+python scripts/analyze_feed.py chainlink_usdn_usd.csv --triggerValue 0.97 --recoverValue 0.985 --maxDuration 2 --plotMinValue 0.85 --title "USDN/USD" --pngFile chainlink_usdn_depeg.png
+```
+
+Script output
+
+```bash
+...
+TRIGGER roundId 18446744073709552311 answer 96900000 trigger 97000000 dateTimeAt 2022-01-24 08:05:45
+RECOVER ------- 1d 11:0:42 ticks 25 roundId 18446744073709552336 answer 98622300 dateTimeAt 2022-01-25 19:06:27
+TRIGGER roundId 18446744073709552534 answer 96992500 trigger 97000000 dateTimeAt 2022-04-03 00:00:20
+RECOVER ------- 11d 1:34:9 ticks 321 roundId 18446744073709552855 answer 98613144 dateTimeAt 2022-04-14 01:34:29
+TRIGGER roundId 18446744073709552879 answer 96798900 trigger 97000000 dateTimeAt 2022-04-24 11:16:04
+RECOVER ------- 10d 12:33:33 ticks 25 roundId 18446744073709552904 answer 98858013 dateTimeAt 2022-05-04 23:49:37
+TRIGGER roundId 18446744073709552917 answer 96750659 trigger 97000000 dateTimeAt 2022-05-10 00:09:57
+RECOVER ------- 20d 6:34:13 ticks 1592 roundId 18446744073709554509 answer 98603667 dateTimeAt 2022-05-30 06:44:10
+...
+```
+
+Plot
+![USDN/USD plot](./chainlink_usdn_depeg.png)
