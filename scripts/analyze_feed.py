@@ -24,6 +24,16 @@ def duration2str(seconds:int) -> str:
     return "{}d {}:{}:{}".format(days, remainingHours, remainingMinutes, remainingSeconds)
 
 
+def twap(tpArray, tArray) -> int:
+    (tpSum, tSum) = (0, 0)
+
+    for i in range(len(tpArray)):
+        tpSum += tpArray[i]
+        tSum += tArray[i]
+    
+    return int(tpSum / tSum)
+
+
 # https://stackoverflow.com/questions/59286254/export-time-series-plot
 # https://matplotlib.org/stable/tutorials/introductory/pyplot.html
 def main() -> int:
@@ -39,6 +49,8 @@ def main() -> int:
     args = parser.parse_args()
 
     feed = pd.read_csv(args.csv)
+    feed['twap'] = 0
+
     feedSorted = feed.sort_values('roundId')
 
     triggerValue = int(args.triggerValue * 10 ** args.decimals)
@@ -52,6 +64,11 @@ def main() -> int:
     triggeredAt = 0
     triggerTicks = 0
     lastUpdatedAt = 0
+
+    n = 20
+    tpArray = [0] * n
+    tArray = [0] * n
+    i = 0
 
     for row in feedSorted.index:
         data = feedSorted.loc[row]
@@ -80,16 +97,29 @@ def main() -> int:
                 print("RECOVER ------- {} ticks {} roundId {} answer {} dateTimeAt {}".format(duration2str(duration), triggerTicks, roundId, answer, dateTimeAt))
                 triggeredAt = 0
         
+        timeDelta = updatedAt - lastUpdatedAt
+        tpArray[i % n] = timeDelta * answer
+        tArray[i % n] = timeDelta
+
+        if i > n:
+            feed.at[i, 'twap'] = twap(tpArray, tArray)
+        
         lastUpdatedAt = updatedAt
+        i += 1
     
     if triggeredAt > 0:
         depegs.append((triggeredAt, lastUpdatedAt))
-    
+
+    # debug print for twap
+    print(feed.head(20))
+
+    # plot time series and stuff
     feed['dateTime'] = feed['dateTimeAt'].apply(pd.to_datetime)
     feed.set_index('dateTime',inplace=True)
     
-    ax = feed['answer'].plot(grid=True)
-    ax.set_xlim(pd.Timestamp('2022-01-01'), pd.Timestamp('2022-11-01'))
+    feed['answer'].plot(color='#8888ff', alpha=0.5, grid=True)
+    ax = feed['twap'].plot(color='#000088', alpha=0.6)
+    ax.set_xlim(pd.Timestamp('2022-03-15'), pd.Timestamp('2022-06-01'))
     ax.set_ylim(int(args.plotMinValue * 100000000), 104000000)
 
     # draw trigger and min value lines
