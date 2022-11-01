@@ -84,7 +84,7 @@ Resulting plot
 ![USDT/USD plot](./chainlink_usdt_usd.png)
 ![USDT/USD histogram](./chainlink_usdt_usd_hist.png)
 
-### USDN Condensed
+### Neutrino USDN Condensed
 
 ```bash
 python scripts/price_feed.py --net mainnet --pair USDN/USD > chainlink_usdn_usd_all.txt
@@ -98,9 +98,38 @@ Resulting plot
 ![USDN/USD plot](./chainlink_usdn_usd.png)
 ![USDN/USD histogram](./chainlink_usdn_usd_hist.png)
 
+### Unity USDP Condensed
 
-## Depeg Trigger and Recovery
-### USDC Depeg
+```bash
+python scripts/price_feed.py --net mainnet --pair USDP/USD > chainlink_usdp_usd_all.txt
+cat chainlink_usdp_usd_all.txt | python scripts/feed2csv.py > chainlink_usdp_usd_all.csv
+python scripts/compact_feed.py chainlink_usdn_usd_all.csv chainlink_usdn_usd.csv
+python scripts/plot_feed.py chainlink_usdn_usd.csv chainlink_usdn_usd.png --title "USDN/USD"
+python scripts/histogram_feed.py chainlink_usdp_usd.csv chainlink_usdp_usd_hist.png --title "USDP/USD"
+```
+
+Resulting plot
+
+![USDN/USD plot](./chainlink_usdp_usd.png)
+![USDN/USD histogram](./chainlink_usdp_usd_hist.png)
+
+### True TUSD Condensed
+
+```bash
+python scripts/price_feed.py --net mainnet --pair TUSD/USD > chainlink_tusd_usd_all.txt
+cat chainlink_tusd_usd_all.txt | python scripts/feed2csv.py > chainlink_tusd_usd_all.csv
+python scripts/compact_feed.py chainlink_tusd_usd_all.csv chainlink_tusd_usd.csv
+python scripts/plot_feed.py chainlink_tusd_usd.csv chainlink_tusd_usd.png --title "TUSD/USD"
+python scripts/histogram_feed.py chainlink_tusd_usd.csv chainlink_tusd_usd_hist.png --title "TUSD/USD"
+```
+
+Resulting plot
+
+![USDN/USD plot](./chainlink_tusd_usd.png)
+![USDN/USD histogram](./chainlink_tusd_usd_hist.png)
+
+## Depeg Trigger (and Recovery)
+### USDC Depeg Analysis
 
 ```bash
 python scripts/analyze_feed.py chainlink_usdc_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 1 --plotMinValue 0.97 --title "USDC/USD" --pngFile chainlink_usdc_depeg.png
@@ -117,10 +146,10 @@ Plot
 
 ![USDC/USD plot](./chainlink_usdc_depeg.png)
 
-### USDT Depeg
+### USDT Depeg Analysis
 
 ```bash
-python scripts/analyze_feed.py chainlink_usdt_usd.csv --triggerValue 0.99 --recoverValue 0.995 --maxDuration 1 --plotMinValue 0.9 --title "USTC/USD" --pngFile chainlink_usdt_depeg.png
+python scripts/analyze_feed.py chainlink_usdt_usd.csv --triggerValue 0.99 --recoverValue 0.995 --maxDuration 1 --plotMinValue 0.9 --title "USDT/USD" --pngFile chainlink_usdt_depeg.png
 ```
 
 Script output
@@ -135,7 +164,16 @@ RECOVER ------- 0d 9:19:36 ticks 41 roundId 36893488147419103731 answer 99753476
 Plot
 ![USDT/USD plot](./chainlink_usdt_depeg.png)
 
-### USDN Depeg
+Zooming in
+
+```bash
+python scripts/analyze_feed.py chainlink_usdt_usd.csv --triggerValue 0.99 --recoverValue 0.995 --maxDuration 1 --plotMinValue 0.9 --title "USDT/USD" --pngFile chainlink_usdt_depeg_zoomed.png --plotDateMin 2022-05-10 --plotDateMax 2022-05-15
+```
+
+Zoomed Plot
+![Zoomed USDT/USD plot](./chainlink_usdt_depeg_zoomed.png)
+
+### USDN Depeg Analysis
 
 ```bash
 python scripts/analyze_feed.py chainlink_usdn_usd.csv --triggerValue 0.97 --recoverValue 0.985 --maxDuration 2 --plotMinValue 0.85 --title "USDN/USD" --pngFile chainlink_usdn_depeg.png
@@ -158,3 +196,53 @@ RECOVER ------- 20d 6:34:13 ticks 1592 roundId 18446744073709554509 answer 98603
 
 Plot
 ![USDN/USD plot](./chainlink_usdn_depeg.png)
+
+Zooming in 
+
+```
+python scripts/analyze_feed.py chainlink_usdn_usd.csv --triggerValue 0.97 --recoverValue 0.985 --maxDuration 2 --plotMinValue 0.7 --title "USDN/USD" --pngFile chainlink_usdn_depeg_zoomed.png --plotDateMin 2022-03-30 --plotDateMax 2022-04-15
+```
+
+Zoomed Plot
+![Zoomed USDN/USD plot](./chainlink_usdn_depeg_zoomed.png)
+
+
+### USDP Depeg Analysis
+
+```bash
+python scripts/analyze_feed.py chainlink_usdp_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 2 --plotMinValue 0.85 --title "USDP/USD" --pngFile chainlink_usdp_depeg.png
+```
+
+Script output
+
+```bash
+triggerValue: 0.995 (99500000)
+recoverValue: 0.999 (99900000)
+TRIGGER roundId 18446744073709556709 answer 99491599 trigger 99500000 dateTimeAt 2022-04-21 16:06:37
+RECOVER ------- 0d 6:1:51 ticks 6 roundId 18446744073709556715 answer 100002098 dateTimeAt 2022-04-21 22:08:28
+```
+
+Plot
+![USDP/USD plot](./chainlink_usdp_depeg.png)
+
+Chainlink price feed does not show any depeg tencency.
+However, depending on individual data source this might look somewhat different:
+
+* [USDP on coingecko (depeg on Oct 5th?)](https://www.coingecko.com/en/coins/usdp)
+* [USDP on coinmarketcap (gaps, Apr-Jun, no depeg)](https://coinmarketcap.com/currencies/usdp/)
+
+### TUSD Depeg
+
+```bash
+python scripts/analyze_feed.py chainlink_tusd_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 2 --plotMinValue 0.85 --title "TUSD/USD" --pngFile chainlink_tusd_depeg.png
+```
+
+Script output
+
+```bash
+triggerValue: 0.995 (99500000)
+recoverValue: 0.999 (99900000)
+```
+
+Plot
+![TUSD/USD plot](./chainlink_tusd_depeg.png)

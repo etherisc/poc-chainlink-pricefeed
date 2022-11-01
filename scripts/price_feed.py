@@ -22,8 +22,8 @@ feedAddress['mainnet']['USDC/USD'] = '0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6
 feedAddress['mainnet']['USDT/USD'] = '0x3E7d1eAB13ad0104d2750B8863b489D65364e32D'
 feedAddress['mainnet']['USDN/USD'] = '0x7a8544894F7FD0C69cFcBE2b4b2E277B0b9a4355'
 
-feedAddress['mainnet']['HUSD/ETH'] = '0x1B61BAD1495161bCb6C03DDB0E41622c0270bB1A'
-feedAddress['mainnet']['ETH/USD'] = '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419'
+feedAddress['mainnet']['USDP/USD'] = '0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3'
+feedAddress['mainnet']['TUSD/USD'] = '0xec746eCF986E2927Abd291a2A1716c940100f8Ba'
 
 feedAddress['goerli'] = {}
 feedAddress['goerli']['BTC/USD'] = '0xA39434A63A52E749F02807ae27335515BA4b07F7'

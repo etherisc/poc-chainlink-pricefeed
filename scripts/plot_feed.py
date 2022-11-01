@@ -20,8 +20,8 @@ def main() -> int:
     feed.set_index('dateTime',inplace=True)
     
     ax = feed['answer'].plot(grid=True)
-    ax.set_xlim(pd.Timestamp('2021-06-01'), pd.Timestamp('2021-12-01'))
-    ax.set_ylim(95000000, 102000000)
+    # ax.set_xlim(pd.Timestamp('2022-05-01'), pd.Timestamp('2022-12-01'))
+    # ax.set_ylim(95000000, 102000000)
     
     if args.title:
         plt.title(args.title)

@@ -10,8 +10,6 @@ DECIMALS = 8
 TRIGGER_VALUE = 0.99
 RECOVER_VALUE = 0.95
 PLOT_MIN_VALUE = 0.85
-PLOT_DATE_MIN = '2022-01-01'
-PLOT_DATE_MAX = '2022-11-01'
 MAX_DURATION = 1
 
 def duration2str(seconds:int) -> str:
@@ -46,8 +44,6 @@ def main() -> int:
     parser.add_argument('--recoverValue', type=float, default=RECOVER_VALUE, help='minimal exchange rate to auto-recover (float, default={})'.format(RECOVER_VALUE))
     parser.add_argument('--maxDuration', type=int, default=MAX_DURATION, help='max days allowed below trigger (int, default={})'.format(MAX_DURATION))
     parser.add_argument('--plotMinValue', type=float, default=PLOT_MIN_VALUE, help='plot y min value (float, default={})'.format(PLOT_MIN_VALUE))
-    parser.add_argument('--plotDateMin', type=str, default=PLOT_DATE_MIN, help='plot date min value (str, default={})'.format(PLOT_DATE_MIN))
-    parser.add_argument('--plotDateMax', type=str, default=PLOT_DATE_MAX, help='plot date max value (str, default={})'.format(PLOT_DATE_MAX))
     parser.add_argument('--title', type=str, help='title for plot')
     parser.add_argument('--pngFile', type=str, default='out.png', help='plot png output file')
     args = parser.parse_args()
@@ -59,8 +55,6 @@ def main() -> int:
 
     triggerValue = int(args.triggerValue * 10 ** args.decimals)
     recoverValue = int(args.recoverValue * 10 ** args.decimals)
-    dateMin = args.plotDateMin
-    dateMax = args.plotDateMax
 
     print('triggerValue: {} ({})'.format(args.triggerValue, triggerValue))
     print('recoverValue: {} ({})'.format(args.recoverValue, recoverValue))
@@ -120,9 +114,9 @@ def main() -> int:
     feed['dateTime'] = feed['dateTimeAt'].apply(pd.to_datetime)
     feed.set_index('dateTime',inplace=True)
     
-    feed['answer'].plot(color='#8888ff', alpha=0.5)
-    ax = feed['twap'].plot(color='#000088', alpha=0.6, grid=True)
-    ax.set_xlim(pd.Timestamp(dateMin), pd.Timestamp(dateMax))
+    feed['answer'].plot(color='#8888ff', alpha=0.5, grid=True)
+    ax = feed['twap'].plot(color='#000088', alpha=0.6)
+    ax.set_xlim(pd.Timestamp('2022-03-01'), pd.Timestamp('2022-04-30'))
     ax.set_ylim(int(args.plotMinValue * 100000000), 104000000)
 
     # draw trigger and min value lines
