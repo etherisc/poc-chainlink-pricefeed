@@ -62,6 +62,7 @@ Plot CSV file (answer against updatedAt)
 
 ```bash
 python scripts/plot_feed.py chainlink_usdc_usd.csv chainlink_usdc_usd.png --title "USDC/USD"
+python scripts/histogram_feed.py chainlink_usdc_usd.csv chainlink_usdc_usd_hist.png --title "USDC/USD"
 ```
 
 Resulting plot
@@ -77,6 +78,7 @@ python scripts/price_feed.py --net mainnet --pair USDT/USD > chainlink_usdt_usd_
 cat chainlink_usdt_usd_all.txt | python scripts/feed2csv.py > chainlink_usdt_usd_all.csv
 python scripts/compact_feed.py chainlink_usdt_usd_all.csv chainlink_usdt_usd.csv
 python scripts/plot_feed.py chainlink_usdt_usd.csv chainlink_usdt_usd.png --title "USDT/USD"
+python scripts/histogram_feed.py chainlink_usdt_usd.csv chainlink_usdt_usd_hist.png --title "USDT/USD"
 ```
 
 Resulting plot
@@ -91,6 +93,7 @@ python scripts/price_feed.py --net mainnet --pair USDN/USD > chainlink_usdn_usd_
 cat chainlink_usdn_usd_all.txt | python scripts/feed2csv.py > chainlink_usdn_usd_all.csv
 python scripts/compact_feed.py chainlink_usdn_usd_all.csv chainlink_usdn_usd.csv
 python scripts/plot_feed.py chainlink_usdn_usd.csv chainlink_usdn_usd.png --title "USDN/USD"
+python scripts/histogram_feed.py chainlink_usdn_usd.csv chainlink_usdn_usd_hist.png --title "USDN/USD"
 ```
 
 Resulting plot
@@ -103,8 +106,8 @@ Resulting plot
 ```bash
 python scripts/price_feed.py --net mainnet --pair USDP/USD > chainlink_usdp_usd_all.txt
 cat chainlink_usdp_usd_all.txt | python scripts/feed2csv.py > chainlink_usdp_usd_all.csv
-python scripts/compact_feed.py chainlink_usdn_usd_all.csv chainlink_usdn_usd.csv
-python scripts/plot_feed.py chainlink_usdn_usd.csv chainlink_usdn_usd.png --title "USDN/USD"
+python scripts/compact_feed.py chainlink_usdp_usd_all.csv chainlink_usdp_usd.csv
+python scripts/plot_feed.py chainlink_usdp_usd.csv chainlink_usdp_usd.png --title "USDP/USD"
 python scripts/histogram_feed.py chainlink_usdp_usd.csv chainlink_usdp_usd_hist.png --title "USDP/USD"
 ```
 
@@ -144,7 +147,19 @@ recoverValue: 0.999 (99900000)
 
 Plot
 
+```bash
+python scripts/analyze_feed.py chainlink_usdc_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 1 --plotMinValue 0.96 --title "USDC/USD" --pngFile chainlink_usdc_depeg.png --plotDateMin 2022-01-01 --plotDateMax 2022-11-14
+```
+
 ![USDC/USD plot](./chainlink_usdc_depeg.png)
+
+Zooming in (FTX implosion)
+
+```bash
+python scripts/analyze_feed.py chainlink_usdc_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 1 --plotMinValue 0.96 --title "USDC/USD" --pngFile chainlink_usdc_depeg_zoomed_post_ftx.png --plotDateMin 2022-11-08 --plotDateMax 2022-11-13
+```
+
+![Zoomed USDT/USD plot](./chainlink_usdc_depeg_zoomed_post_ftx.png)
 
 ### USDT Depeg Analysis
 
@@ -159,24 +174,38 @@ triggerValue: 0.99 (99000000)
 recoverValue: 0.995 (99500000)
 TRIGGER roundId 36893488147419103690 answer 98750000 trigger 99000000 dateTimeAt 2022-05-12 06:23:41
 RECOVER ------- 0d 9:19:36 ticks 41 roundId 36893488147419103731 answer 99753476 dateTimeAt 2022-05-12 15:43:17
+TRIGGER roundId 36893488147419103923 answer 98946866 trigger 99000000 dateTimeAt 2022-11-10 12:14:23
+RECOVER ------- 0d 1:1:0 ticks 10 roundId 36893488147419103933 answer 99529660 dateTimeAt 2022-11-10 13:15:23
 ```
 
 Plot
+
+```bash
+python scripts/analyze_feed.py chainlink_usdt_usd.csv --triggerValue 0.99 --recoverValue 0.995 --maxDuration 1 --plotMinValue 0.96 --title "USDT/USD" --pngFile chainlink_usdt_depeg.png --plotDateMin 2022-01-01 --plotDateMax 2022-11-14
+```
+
 ![USDT/USD plot](./chainlink_usdt_depeg.png)
 
-Zooming in
+Zooming in (UST depeg)
 
 ```bash
 python scripts/analyze_feed.py chainlink_usdt_usd.csv --triggerValue 0.99 --recoverValue 0.995 --maxDuration 1 --plotMinValue 0.9 --title "USDT/USD" --pngFile chainlink_usdt_depeg_zoomed.png --plotDateMin 2022-05-10 --plotDateMax 2022-05-15
 ```
 
-Zoomed Plot
 ![Zoomed USDT/USD plot](./chainlink_usdt_depeg_zoomed.png)
+
+Zooming in (FTX implosion)
+
+```bash
+python scripts/analyze_feed.py chainlink_usdt_usd.csv --triggerValue 0.99 --recoverValue 0.995 --maxDuration 1 --plotMinValue 0.96 --title "USDT/USD" --pngFile chainlink_usdt_depeg_zoomed_post_ftx.png --plotDateMin 2022-11-08 --plotDateMax 2022-11-13
+```
+
+![Zoomed USDT/USD plot](./chainlink_usdt_depeg_zoomed_post_ftx.png)
 
 ### USDN Depeg Analysis
 
 ```bash
-python scripts/analyze_feed.py chainlink_usdn_usd.csv --triggerValue 0.97 --recoverValue 0.985 --maxDuration 2 --plotMinValue 0.85 --title "USDN/USD" --pngFile chainlink_usdn_depeg.png
+python scripts/analyze_feed.py chainlink_usdn_usd.csv --triggerValue 0.97 --recoverValue 0.985 --maxDuration 2 --plotMinValue 0.85 --title "USDN/USD" --pngFile chainlink_usdn_depeg.png  --plotDateMin 2022-01-01 --plotDateMax 2022-11-14
 ```
 
 Script output
@@ -199,18 +228,25 @@ Plot
 
 Zooming in 
 
-```
+```bash
 python scripts/analyze_feed.py chainlink_usdn_usd.csv --triggerValue 0.97 --recoverValue 0.985 --maxDuration 2 --plotMinValue 0.7 --title "USDN/USD" --pngFile chainlink_usdn_depeg_zoomed.png --plotDateMin 2022-03-30 --plotDateMax 2022-04-15
 ```
 
 Zoomed Plot
 ![Zoomed USDN/USD plot](./chainlink_usdn_depeg_zoomed.png)
 
+Zooming in (FTX implosion)
+
+```bash
+python scripts/analyze_feed.py chainlink_usdn_usd.csv --triggerValue 0.97 --recoverValue 0.985 --maxDuration 2 --plotMinValue 0.7 --title "USDN/USD" --pngFile chainlink_usdn_depeg_zoomed_post_ftx.png --plotDateMin 2022-11-05 --plotDateMax 2022-11-14
+```
+
+![Zoomed USDN/USD plot](./chainlink_usdn_depeg_zoomed_post_ftx.png)
 
 ### USDP Depeg Analysis
 
 ```bash
-python scripts/analyze_feed.py chainlink_usdp_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 2 --plotMinValue 0.85 --title "USDP/USD" --pngFile chainlink_usdp_depeg.png
+python scripts/analyze_feed.py chainlink_usdp_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 2 --plotMinValue 0.85 --title "USDP/USD" --pngFile chainlink_usdp_depeg.png  --plotDateMax 2022-11-14
 ```
 
 Script output
@@ -220,6 +256,8 @@ triggerValue: 0.995 (99500000)
 recoverValue: 0.999 (99900000)
 TRIGGER roundId 18446744073709556709 answer 99491599 trigger 99500000 dateTimeAt 2022-04-21 16:06:37
 RECOVER ------- 0d 6:1:51 ticks 6 roundId 18446744073709556715 answer 100002098 dateTimeAt 2022-04-21 22:08:28
+TRIGGER roundId 18446744073709561679 answer 99459643 trigger 99500000 dateTimeAt 2022-11-13 13:05:11
+RECOVER ------- 0d 22:12:36 ticks 22 roundId 18446744073709561701 answer 100111926 dateTimeAt 2022-11-14 11:17:47
 ```
 
 Plot
@@ -234,7 +272,7 @@ However, depending on individual data source this might look somewhat different:
 ### TUSD Depeg
 
 ```bash
-python scripts/analyze_feed.py chainlink_tusd_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 2 --plotMinValue 0.85 --title "TUSD/USD" --pngFile chainlink_tusd_depeg.png
+python scripts/analyze_feed.py chainlink_tusd_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 2 --plotMinValue 0.85 --title "TUSD/USD" --pngFile chainlink_tusd_depeg.png --plotDateMax 2022-11-14
 ```
 
 Script output
@@ -242,7 +280,21 @@ Script output
 ```bash
 triggerValue: 0.995 (99500000)
 recoverValue: 0.999 (99900000)
+TRIGGER roundId 18446744073709551976 answer 99298200 trigger 99500000 dateTimeAt 2022-11-09 23:08:11
+RECOVER ------- 0d 0:43:0 ticks 2 roundId 18446744073709551978 answer 99972098 dateTimeAt 2022-11-09 23:51:11
+TRIGGER roundId 18446744073709551985 answer 99475954 trigger 99500000 dateTimeAt 2022-11-10 04:18:23
+RECOVER ------- 0d 0:55:24 ticks 2 roundId 18446744073709551987 answer 100143250 dateTimeAt 2022-11-10 05:13:47
+TRIGGER roundId 18446744073709552032 answer 99390658 trigger 99500000 dateTimeAt 2022-11-13 14:06:59
+RECOVER ------- 0d 16:37:24 ticks 2 roundId 18446744073709552034 answer 100064508 dateTimeAt 2022-11-14 06:44:23
 ```
 
 Plot
 ![TUSD/USD plot](./chainlink_tusd_depeg.png)
+
+Zoomed plot
+
+```bash
+python scripts/analyze_feed.py chainlink_tusd_usd.csv --triggerValue 0.995 --recoverValue 0.999 --maxDuration 2 --plotMinValue 0.85 --title "TUSD/USD" --pngFile chainlink_tusd_depeg_zoom.png --plotDateMin 2022-11-05 --plotDateMax 2022-11-14
+```
+
+![TUSD/USD plot](./chainlink_tusd_depeg_zoom.png)
